@@ -1,5 +1,5 @@
-#ifndef LnnTTreeCreator_cxx
-#define LnnTTreeCreator_cxx
+#ifndef LnnTTreeCreator_H
+#define LnnTTreeCreator_H
 
 #include <TChain.h>
 #include <TTree.h>
@@ -49,7 +49,7 @@ class LnnTTreeCreator : public AliAnalysisTaskSE {
   Double_t GetTOFmass(AliAODTrack*);
   Double_t GetTritNsigma(AliAODTrack*);
 
- protected:
+ private:
   AliAODEvent    *fAOD;        //! AOD object
   TList          *fOutputList; //! Output list
   TTree          *fOutputTree; //! Output tree
@@ -68,7 +68,9 @@ class LnnTTreeCreator : public AliAnalysisTaskSE {
   TF1 *upper;                  //!lower dedx line for 3H
   int chargeProduct;           //!flag matter
 
+  /// \cond CLASSDEF
   ClassDef(LnnTTreeCreator, 1);
+  /// \endcond
 };
 
 #endif

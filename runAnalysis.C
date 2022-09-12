@@ -2,7 +2,7 @@
 // precompiled header files (with extension pcm) are available, so that you do not need to
 // specify includes for those. for your own task however, you (probably) have not generated a
 // pcm file, so we need to include it explicitly
-#include "AliAnalysisTaskMyTask.h"
+#include "LnnTTreeCreator.h"
 
 void runAnalysis()
 {
@@ -21,7 +21,7 @@ void runAnalysis()
 #endif
      
     // create the analysis manager
-    AliAnalysisManager *mgr = new AliAnalysisManager("AnalysisTaskExample");
+    AliAnalysisManager *mgr = new AliAnalysisManager("AliAnalysisTTreeCreator");
     AliAODInputHandler *aodH = new AliAODInputHandler();
     mgr->SetInputEventHandler(aodH);
 
@@ -31,21 +31,21 @@ void runAnalysis()
     // here we have to differentiate between using the just-in-time compiler
     // from root6, or the interpreter of root5
 #if !defined (__CINT__) || defined (__CLING__)
-    gInterpreter->LoadMacro("AliAnalysisTaskMyTask.cxx++g");
+    gInterpreter->LoadMacro("LnnTTreeCreator.cxx++g");
     AliAnalysisTaskMyTask *task = reinterpret_cast<AliAnalysisTaskMyTask*>(gInterpreter->ExecuteMacro("AddMyTask.C"));
 #else
-    gROOT->LoadMacro("AliAnalysisTaskMyTask.cxx++g");
+    gROOT->LoadMacro("LnnTTreeCreator.cxx++g");
     gROOT->LoadMacro("AddMyTask.C");
     AliAnalysisTaskMyTask *task = AddMyTask();
 #endif
 
 
-    if(!mgr->InitAnalysis()) return;
+    if (!mgr->InitAnalysis()) return;
     mgr->SetDebugLevel(2);
     mgr->PrintStatus();
     mgr->SetUseProgressBar(1, 25);
 
-    if(local) {
+    if (local) {
         // if you want to run locally, we need to define some input
         TChain* chain = new TChain("aodTree");
         // add a few files to the chain (change this so that your local files are added)
@@ -58,8 +58,8 @@ void runAnalysis()
         // also specify the include (header) paths on grid
         alienHandler->AddIncludePath("-I. -I$ROOTSYS/include -I$ALICE_ROOT -I$ALICE_ROOT/include -I$ALICE_PHYSICS/include");
         // make sure your source files get copied to grid
-        alienHandler->SetAdditionalLibs("AliAnalysisTaskMyTask.cxx AliAnalysisTaskMyTask.h");
-        alienHandler->SetAnalysisSource("AliAnalysisTaskMyTask.cxx");
+        alienHandler->SetAdditionalLibs("LnnTTreeCreator.cxx LnnTTreeCreator.h");
+        alienHandler->SetAnalysisSource("LnnTTreeCreator.cxx");
         // select the aliphysics version. all other packages
         // are LOADED AUTOMATICALLY!
         alienHandler->SetAliPhysicsVersion("vAN-20181028_ROOT6-1");
@@ -89,8 +89,8 @@ void runAnalysis()
         alienHandler->SetMergeViaJDL(kTRUE);
 
         // define the output folders
-        alienHandler->SetGridWorkingDir("myWorkingDir");
-        alienHandler->SetGridOutputDir("myOutputDir");
+        alienHandler->SetGridWorkingDir("LnnWorkingDir");
+        alienHandler->SetGridOutputDir("LnnOutputDir");
 
         // connect the alien plugin to the manager
         mgr->SetGridHandler(alienHandler);

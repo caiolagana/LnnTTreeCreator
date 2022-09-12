@@ -62,12 +62,12 @@ typedef struct HyperRecoDecay
 
 HyperRecoDecay shrd;
 
+using namespace std;
 
 ClassImp(LnnTTreeCreator)
 
 //________________________________________________________________________
-LnnTTreeCreator::LnnTTreeCreator(const char *name) 
-  : AliAnalysisTaskSE(name),
+LnnTTreeCreator::LnnTTreeCreator(const char *name) : AliAnalysisTaskSE(name),
     fAOD(0),
     fOutputList(0),
     fOutputTree(0),
