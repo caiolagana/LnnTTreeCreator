@@ -43,7 +43,7 @@ void runAnalysis()
 
   // PID response task. Works with Aliroot>= v5-05-19-AN
   gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPIDResponse.C");
-  AliAnalysisTaskPIDResponse *taskPID = AddTaskPIDResponse(kFALSE);
+  AddTaskPIDResponse(kFALSE);
 
     // compile the class and load the add task macro
     // here we have to differentiate between using the just-in-time compiler
