@@ -70,30 +70,6 @@ typedef struct HyperRecoDecay
 HyperRecoDecay shrd;
 
 //________________________________________________________________________
-LnnTTreeCreator::LnnTTreeCreator() : AliAnalysisTaskSE(),
-    fAOD(0),
-    fOutputList(0),
-    fOutputTree(0),
-    track(0),
-    tr1(0),
-    tr2(0),
-    tritTrack(0),
-    pionTrack(0),
-    v0(0),
-    //fPIDResponse(0),
-    aodCentrality(0),
-    Nch(0),
-    center(0),
-    lower(0),
-    upper(0),
-    chargeProduct(0),
-    prim_vtx(0)
-{
-    // default constructor, don't allocate memory here!
-    // this is used by root for IO purposes, it needs to remain empty
-}
-
-//________________________________________________________________________
 LnnTTreeCreator::LnnTTreeCreator(const char *name) : AliAnalysisTaskSE(name),
     fAOD(0),
     fOutputList(0),
