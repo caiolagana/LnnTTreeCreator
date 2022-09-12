@@ -29,6 +29,12 @@
 #include "LnnTTreeCreator.h"
 #include "AliPIDResponse.h"
 
+class LnnTTreeCreator;
+
+using namespace std;
+
+ClassImp(LnnTTreeCreator)
+
 //
 float pmass = .93827;
 float nmass = .93956;
@@ -63,9 +69,29 @@ typedef struct HyperRecoDecay
 
 HyperRecoDecay shrd;
 
-using namespace std;
-
-ClassImp(LnnTTreeCreator)
+//________________________________________________________________________
+LnnTTreeCreator::LnnTTreeCreator() : AliAnalysisTaskSE(),
+    fAOD(0),
+    fOutputList(0),
+    fOutputTree(0),
+    track(0),
+    tr1(0),
+    tr2(0),
+    tritTrack(0),
+    pionTrack(0),
+    v0(0),
+    //fPIDResponse(0),
+    aodCentrality(0),
+    Nch(0),
+    center(0),
+    lower(0),
+    upper(0),
+    chargeProduct(0),
+    prim_vtx(0)
+{
+    // default constructor, don't allocate memory here!
+    // this is used by root for IO purposes, it needs to remain empty
+}
 
 //________________________________________________________________________
 LnnTTreeCreator::LnnTTreeCreator(const char *name) : AliAnalysisTaskSE(name),
@@ -78,7 +104,7 @@ LnnTTreeCreator::LnnTTreeCreator(const char *name) : AliAnalysisTaskSE(name),
     tritTrack(0),
     pionTrack(0),
     v0(0),
-    fPIDResponse(0),
+    //fPIDResponse(0),
     aodCentrality(0),
     Nch(0),
     center(0),
@@ -101,7 +127,7 @@ LnnTTreeCreator::~LnnTTreeCreator()
   if (fAOD) delete fAOD;
   if (fOutputList) delete fOutputList; 
   if (fOutputTree) delete fOutputTree;
-  if (fPIDResponse) delete fPIDResponse;
+  //if (fPIDResponse) delete fPIDResponse;
   if (aodCentrality) delete aodCentrality;
   if (tritTrack) delete tritTrack;
   if (pionTrack) delete pionTrack;
@@ -121,7 +147,7 @@ void LnnTTreeCreator::UserCreateOutputObjects()
   OpenFile(2); // Needed in case the object should be connected to the output file (trees)
 
   // Get PIDResponse object. Used for TOF PID for dEdx<=90
-  fPIDResponse = ((AliInputEventHandler*)(AliAnalysisManager::GetAnalysisManager()->GetInputEventHandler()))->GetPIDResponse();
+  //fPIDResponse = ((AliInputEventHandler*)(AliAnalysisManager::GetAnalysisManager()->GetInputEventHandler()))->GetPIDResponse();
 
   // Output list
   fOutputList = new TList();
@@ -207,7 +233,7 @@ bool LnnTTreeCreator::IsPionCandidate(AliAODTrack *tr)
 {
   AliPIDResponse::EDetPidStatus statusTPC;
   Double_t nSigmaTPC = -999;
-  statusTPC = fPIDResponse->NumberOfSigmas(AliPIDResponse::kTPC, tr, AliPID::kPion, nSigmaTPC);
+  statusTPC = AliPIDResponse::kDetPidOk;//fPIDResponse->NumberOfSigmas(AliPIDResponse::kTPC, tr, AliPID::kPion, nSigmaTPC);
   bool z = false;
   if (statusTPC == AliPIDResponse::kDetPidOk && TMath::Abs(nSigmaTPC) <= 3) z = true;
 

@@ -31,7 +31,7 @@ class LnnTTreeCreator : public AliAnalysisTaskSE {
   tritTrack(0),
   pionTrack(0),
   v0(0),
-  fPIDResponse(0),
+  //fPIDResponse(0),
   aodCentrality(0),
   Nch(0),
   chargeProduct(0)
@@ -60,7 +60,7 @@ class LnnTTreeCreator : public AliAnalysisTaskSE {
   AliAODTrack    *pionTrack;   //! pion track from V0
   AliAODv0       *v0;          //! V0
   AliAODVertex   *prim_vtx;    //! event primary vertex
-  AliPIDResponse *fPIDResponse;//! pid response
+  //AliPIDResponse *fPIDResponse;//! pid response
   AliCentrality *aodCentrality;//! event centrality
   Int_t Nch;                   //!number of charged particles
   TF1 *center;                 //!central dedx line for 3H

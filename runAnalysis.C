@@ -3,9 +3,9 @@
 // specify includes for those. for your own task however, you (probably) have not generated a
 // pcm file, so we need to include it explicitly
 #include "LnnTTreeCreator.h"
-#include "AliAnalysisTask.h"
-#include "AliAnalysisTaskPIDResponse.h"
-extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
+
+//#include "AliAnalysisTaskPIDResponse.h"
+//extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
 
 void runAnalysis()
 {
@@ -29,21 +29,29 @@ void runAnalysis()
     Bool_t local = kTRUE;
     // if you run on grid, specify test mode (kTRUE) or full grid model (kFALSE)
     Bool_t gridTest = kTRUE;
-    
+
+        // since we will compile a class, tell root where to look for headers  
+#if !defined (__CINT__) || defined (__CLING__)
+    gInterpreter->ProcessLine(".include $ROOTSYS/include");
+    gInterpreter->ProcessLine(".include $ALICE_ROOT/include");
+#else
     gROOT->ProcessLine(".include $ROOTSYS/include");
     gROOT->ProcessLine(".include $ALICE_ROOT/include");
-    gROOT->ProcessLine(".include $ALICE_ROOT/ANALYSIS/");
+#endif
+    //gROOT->ProcessLine(".include $ALICE_ROOT/ANALYSIS/");
      
     // create the analysis manager
     AliAnalysisManager *mgr = new AliAnalysisManager("AliAnalysisTTreeCreator");
     AliAODInputHandler *aodH = new AliAODInputHandler();
     mgr->SetInputEventHandler(aodH);
 
+/*
 #ifndef __CLING__
 //load external macros by LoadMacro only in root5
       gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPIDResponse.C");
 #endif
   AliAnalysisTaskPIDResponse *pidTask = AddTaskPIDResponse(kFALSE);
+*/
 
     // compile the class and load the add task macro
     // here we have to differentiate between using the just-in-time compiler
