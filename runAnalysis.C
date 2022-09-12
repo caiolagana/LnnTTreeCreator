@@ -32,11 +32,11 @@ void runAnalysis()
     // from root6, or the interpreter of root5
 #if !defined (__CINT__) || defined (__CLING__)
     gInterpreter->LoadMacro("LnnTTreeCreator.cxx++g");
-    AliAnalysisTaskMyTask *task = reinterpret_cast<AliAnalysisTaskMyTask*>(gInterpreter->ExecuteMacro("AddMyTask.C"));
+    LnnTTreeCreator *task = reinterpret_cast<LnnTTreeCreator*>(gInterpreter->ExecuteMacro("AddMyTask.C"));
 #else
     gROOT->LoadMacro("LnnTTreeCreator.cxx++g");
     gROOT->LoadMacro("AddMyTask.C");
-    AliAnalysisTaskMyTask *task = AddMyTask();
+    LnnTTreeCreator *task = AddMyTask();
 #endif
 
 
