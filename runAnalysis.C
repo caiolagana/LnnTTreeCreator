@@ -4,8 +4,8 @@
 // pcm file, so we need to include it explicitly
 #include "LnnTTreeCreator.h"
 
-//#include "AliAnalysisTaskPIDResponse.h"
-//extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
+#include "AliAnalysisTaskPIDResponse.h"
+extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
 
 void runAnalysis()
 {
@@ -45,13 +45,13 @@ void runAnalysis()
     AliAODInputHandler *aodH = new AliAODInputHandler();
     mgr->SetInputEventHandler(aodH);
 
-/*
+
 #ifndef __CLING__
 //load external macros by LoadMacro only in root5
       gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPIDResponse.C");
 #endif
   AliAnalysisTaskPIDResponse *pidTask = AddTaskPIDResponse(kFALSE);
-*/
+
 
     // compile the class and load the add task macro
     // here we have to differentiate between using the just-in-time compiler
