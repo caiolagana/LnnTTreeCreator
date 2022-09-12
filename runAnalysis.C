@@ -27,14 +27,9 @@ void runAnalysis()
     // if you run on grid, specify test mode (kTRUE) or full grid model (kFALSE)
     Bool_t gridTest = kTRUE;
     
-    // since we will compile a class, tell root where to look for headers  
-#if !defined (__CINT__) || defined (__CLING__)
-    gInterpreter->ProcessLine(".include $ROOTSYS/include");
-    gInterpreter->ProcessLine(".include $ALICE_ROOT/include");
-#else
     gROOT->ProcessLine(".include $ROOTSYS/include");
     gROOT->ProcessLine(".include $ALICE_ROOT/include");
-#endif
+    gROOT->ProcessLine(".include $ALICE_ROOT/ANALYSIS/");
      
     // create the analysis manager
     AliAnalysisManager *mgr = new AliAnalysisManager("AliAnalysisTTreeCreator");
