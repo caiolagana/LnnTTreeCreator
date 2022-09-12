@@ -6,6 +6,22 @@
 
 void runAnalysis()
 {
+    // Load common libraries
+   gSystem->Load("libCore.so");  
+   gSystem->Load("libTree.so");
+   gSystem->Load("libGeom.so");
+   gSystem->Load("libVMC.so");
+   gSystem->Load("libPhysics.so");
+   gSystem->Load("libMinuit.so"); 
+   gSystem->Load("libGui.so");
+   gSystem->Load("libXMLParser.so");
+   gSystem->Load("libSTEERBase.so");
+   gSystem->Load("libESD.so");
+   gSystem->Load("libCDB.so");
+   gSystem->Load("libAOD.so");
+   gSystem->Load("libANALYSIS.so");
+   gSystem->Load("libANALYSISalice.so");
+    
     // set if you want to run the analysis locally (kTRUE), or on grid (kFALSE)
     Bool_t local = kTRUE;
     // if you run on grid, specify test mode (kTRUE) or full grid model (kFALSE)
