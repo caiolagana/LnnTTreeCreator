@@ -1,11 +1,14 @@
-// include the header of your analysis task here! for classes already compiled by aliBuild,
-// precompiled header files (with extension pcm) are available, so that you do not need to
-// specify includes for those. for your own task however, you (probably) have not generated a
-// pcm file, so we need to include it explicitly
 #include "LnnTTreeCreator.h"
-
 #include "AliAnalysisTaskPIDResponse.h"
-extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
+
+#ifdef __CLING__
+    R__ADD_INCLUDE_PATH($ALICE_ROOT)
+    #include <ANALYSIS/macros/AddTaskPIDResponse.C>
+#endif
+
+#ifdef __ECLIPSE_IDE
+    extern AliAnalysisTask *AddTaskPIDResponse(Bool_t, Bool_t,Bool_t,Int_t);
+#endif
 
 void runAnalysis()
 {
