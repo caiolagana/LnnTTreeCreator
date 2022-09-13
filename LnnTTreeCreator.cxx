@@ -290,7 +290,7 @@ void LnnTTreeCreator::UserExec(Option_t *)
   //loop over tracks for dE/dx and Nch distributions
   for (int i = 0; i < fAOD->GetNumberOfTracks(); i++)
   {
-    track = static_cast<AliAODTrack*>fAOD->GetTrack(i);
+    track = static_cast<AliAODTrack*>(fAOD->GetTrack(i));
     if (PassCuts(track))
     {
       Nch++;
@@ -312,8 +312,8 @@ void LnnTTreeCreator::UserExec(Option_t *)
   {
     // Get V0 and its positive and negative daughters from input AOD.
     v0 = fAOD->GetV0(i); if (!v0) continue;
-    tr1 = static_cast<AliAODTrack*>v0->GetDaughter(0); if (!tr1) continue;
-    tr2 = static_cast<AliAODTrack*>v0->GetDaughter(1); if (!tr2) continue;
+    tr1 = static_cast<AliAODTrack*>(v0->GetDaughter(0)); if (!tr1) continue;
+    tr2 = static_cast<AliAODTrack*>(v0->GetDaughter(1)); if (!tr2) continue;
 
     // Offline v0's only
     if (v0->GetOnFlyStatus() == true) continue;
@@ -337,7 +337,7 @@ void LnnTTreeCreator::UserExec(Option_t *)
     chargeProduct = tritTrack->Charge()*pionTrack->Charge();
 
     //DCA propagation
-    track = static_cast<AliAODTrack*>tritTrack->Clone(); //clone tritium track for DCA propagation
+    track = static_cast<AliAODTrack*>(tritTrack->Clone()); //clone tritium track for DCA propagation
     track->PropagateToDCA(prim_vtx, fAOD->GetMagneticField(), 20., d0z0, cov);
     if (TMath::Abs(d0z0[1]) >= 1.0) continue;
 
