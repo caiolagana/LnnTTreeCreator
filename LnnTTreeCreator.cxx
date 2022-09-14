@@ -225,7 +225,7 @@ Double_t LnnTTreeCreator::GetTOFmass(AliAODTrack *tr)
   if ((tr->GetStatus() & AliVTrack::kTOFout) == AliVTrack::kTOFout)
   {
     trackLeng = tr->GetIntegratedLength();
-    tofSignal = tr->GetDetPid()->GetTOFsignal();
+    tofSignal = tr->GetTOFsignal();
     b = (trackLeng/100.)/((TMath::C()*tofSignal)/1e12);
     if (b > 0 && b < 1) m = (tr->P())*sqrt(pow(b,-2)-1);
   }
@@ -235,8 +235,8 @@ Double_t LnnTTreeCreator::GetTOFmass(AliAODTrack *tr)
 
 Double_t LnnTTreeCreator::GetTritNsigma(AliAODTrack *tr)
 {
-  Double_t dEdx = tr->GetDetPid()->GetTPCsignal();
-  Double_t p = tr->GetDetPid()->GetTPCmomentum();
+  Double_t dEdx = tr->GetTPCsignal();
+  Double_t p = tr->GetTPCmomentum();
   Double_t nsigma=-99;
 
   if (dEdx>=center->Eval(p)) nsigma = 2.9*(dEdx - center->Eval(p))/(upper->Eval(p) - center->Eval(p));
@@ -253,7 +253,7 @@ bool LnnTTreeCreator::IsTritCandidate(AliAODTrack *tr)
   bool isTPCtrit = false;
   bool isTOFtrit = false;
   Double_t TOFmass = GetTOFmass(tr);
-  Double_t dEdx = tr->GetDetPid()->GetTPCsignal();
+  Double_t dEdx = tr->GetTPCsignal();
 
   // TPC tuned nsigma
   if (GetTritNsigma(tr)>=-3.5 && GetTritNsigma(tr)<=4.5) isTPCtrit = true;
@@ -262,7 +262,7 @@ bool LnnTTreeCreator::IsTritCandidate(AliAODTrack *tr)
   if (TOFmass > 2.35 && TOFmass < 3.25) isTOFtrit = true;
 
   // final conditions
-  if (tr->GetDetPid()->GetTPCmomentum() > 0.6 && isTPCtrit == true && (dEdx > 91 || (dEdx <= 91 && isTOFtrit == true))) z = true;
+  if (tr->GetTPCmomentum() > 0.6 && isTPCtrit == true && (dEdx > 91 || (dEdx <= 91 && isTOFtrit == true))) z = true;
 
   return z;
 }
@@ -347,8 +347,8 @@ void LnnTTreeCreator::UserExec(Option_t *)
     shrd.DcaV0ToPrimVertex = v0->DcaV0ToPrimVertex();
     shrd.DecayLengthV0 = v0->DecayLengthV0(prim_vtx_position);
     shrd.PtArmV0 = v0->PtArmV0();
-    shrd.TrigdEdx = chargeProduct*tritTrack->GetDetPid()->GetTPCsignal();
-    shrd.TrigInnP = tritTrack->Charge()*tritTrack->GetDetPid()->GetTPCmomentum();
+    shrd.TrigdEdx = chargeProduct*tritTrack->GetTPCsignal();
+    shrd.TrigInnP = tritTrack->Charge()*tritTrack->GetTPCmomentum();
     shrd.TOFmass  = GetTOFmass(tritTrack);
     shrd.ITScls = pionTrack->GetITSNcls() + 100*tritTrack->GetITSNcls();
     shrd.TPCcls = pionTrack->GetTPCNcls() + 1000*tritTrack->GetTPCNcls();
