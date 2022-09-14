@@ -184,7 +184,7 @@ void LnnTTreeCreator::UserCreateOutputObjects()
 bool LnnTTreeCreator::PassCuts(AliAODTrack *tr)
 {
   bool pass = true;
-
+/*
   // TPC refit
   ULong_t status = tr->GetStatus();
   if ((status&AliESDtrack::kTPCrefit)==0) pass = false;
@@ -194,13 +194,13 @@ bool LnnTTreeCreator::PassCuts(AliAODTrack *tr)
   Int_t vtyp=(Int_t)vtx->GetType();
   Int_t ttyp=(Int_t)tr->GetType();
   if (ttyp==AliAODTrack::kFromDecayVtx && vtyp==AliAODVertex::kKink) pass = false;
-
+*/
   // default cuts
   if (tr->GetTPCNcls() < 60) pass = false;//TPCnlcs is stored in the final TTree so >80 can be applied
   if (tr->Chi2perNDF() > 5.) pass = false;
   if (fabs(tr->Eta()) > 0.9) pass = false;
   if (tr->P() < 0.15)        pass = false;
-  if (!tr->GetDetPid())      pass = false;//otherwise crashes...
+  //if (!tr->GetDetPid())      pass = false;//otherwise crashes...
 
   return pass;
 }
@@ -294,17 +294,18 @@ void LnnTTreeCreator::UserExec(Option_t *)
     if (PassCuts(track))
     {
       Nch++;
-      ((TH2F*)(fOutputList->FindObject("fHistdEdxAll")))->Fill(track->Charge()*track->GetDetPid()->GetTPCmomentum(), track->GetDetPid()->GetTPCsignal());
-      if (track->GetITSNcls()>0) {((TH2F*)(fOutputList->FindObject("fHistdEdxITS")))->Fill(track->Charge()*track->GetDetPid()->GetTPCmomentum(), track->GetDetPid()->GetTPCsignal());}
+      ((TH2F*)(fOutputList->FindObject("fHistdEdxAll")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());
+      if (track->GetITSNcls()>0) {((TH2F*)(fOutputList->FindObject("fHistdEdxITS")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
 
       //TMath::Abs(TOFmass^2-7.929) < 3*0.363
-      if (TMath::Abs(pow(GetTOFmass(track),2)-7.929)<3*0.363){
-      ((TH2F*)(fOutputList->FindObject("fHistdEdxTOF")))->Fill(track->Charge()*track->GetDetPid()->GetTPCmomentum(), track->GetDetPid()->GetTPCsignal());
-      if (track->GetITSNcls()>0){
-      ((TH2F*)(fOutputList->FindObject("fHistdEdxTOFITS")))->Fill(track->Charge()*track->GetDetPid()->GetTPCmomentum(), track->GetDetPid()->GetTPCsignal());}
+      if (TMath::Abs(pow(GetTOFmass(track),2)-7.929)<3*0.363)
+      {
+        ((TH2F*)(fOutputList->FindObject("fHistdEdxTOF")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());
+        if (track->GetITSNcls()>0) {
+        ((TH2F*)(fOutputList->FindObject("fHistdEdxTOFITS")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal()); }
+      }
     }
   }
-}
   ((TH1F*)(fOutputList->FindObject("fHistNch")))->Fill(Nch);
 
   //loop over v0's
