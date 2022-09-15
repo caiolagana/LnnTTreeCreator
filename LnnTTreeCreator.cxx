@@ -275,6 +275,7 @@ void LnnTTreeCreator::UserExec(Option_t *)
 
   // Get AOD event
   fAOD = dynamic_cast<AliAODEvent*>(InputEvent()); if (!fAOD) return;
+  cout << "entering event" << endl;
 
   // General stuff
   Nch = 0;
