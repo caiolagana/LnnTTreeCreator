@@ -138,7 +138,7 @@ void LnnTTreeCreator::UserCreateOutputObjects()
   fOutputList->Add(fHistdEdxPIDtrit);
   // dEdx bands trit
   TH2F *fHistdEdxBandsTrit = new TH2F("fHistdEdxBandsTrit","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
-  fOutputList->Add(fHistdEdxPIDtrit);
+  fOutputList->Add(fHistdEdxBandsTrit);
   // TOF-cleaned dEdx
   TH2F *fHistdEdxTOF = new TH2F("fHistdEdxTOF","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxTOF);
