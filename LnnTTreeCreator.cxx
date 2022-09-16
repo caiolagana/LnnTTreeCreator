@@ -133,12 +133,9 @@ void LnnTTreeCreator::UserCreateOutputObjects()
   // dEdx
   TH2F *fHistdEdxAll = new TH2F("fHistdEdxAll","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxAll);
-  // dEdx PIDResponse trit
+  // dEdx trits
   TH2F *fHistdEdxPIDtrit = new TH2F("fHistdEdxPIDtrit","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxPIDtrit);
-  // dEdx bands trit
-  TH2F *fHistdEdxBandsTrit = new TH2F("fHistdEdxBandsTrit","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
-  fOutputList->Add(fHistdEdxBandsTrit);
   // TOF-cleaned dEdx
   TH2F *fHistdEdxTOF = new TH2F("fHistdEdxTOF","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxTOF);
@@ -221,7 +218,7 @@ bool LnnTTreeCreator::IsPionCandidate(AliAODTrack *tr)
   return z;
 }
 
-bool LnnTTreeCreator::IsTritPID(AliAODTrack *tr)
+bool LnnTTreeCreator::IsTritPID(AliAODTrack *tr) //crashes?! not using...
 {
   AliPIDResponse::EDetPidStatus statusTPC;
   Double_t nSigmaTPC = -999;
@@ -313,7 +310,7 @@ void LnnTTreeCreator::UserExec(Option_t *)
       ((TH2F*)(fOutputList->FindObject("fHistdEdxAll")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());
       if (track->GetITSNcls()>0) {((TH2F*)(fOutputList->FindObject("fHistdEdxITS")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
       if (IsTritCandidate(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxBandsTrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
-      if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxPIDtrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
+      //if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxPIDtrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
       
       //TMath::Abs(TOFmass^2-7.929) < 3*0.363
       if (TMath::Abs(pow(GetTOFmass(track),2)-7.929)<3*0.363)
