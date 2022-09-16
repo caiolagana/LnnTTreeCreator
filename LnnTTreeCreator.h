@@ -46,6 +46,7 @@ class LnnTTreeCreator : public AliAnalysisTaskSE {
   bool PassCuts(AliAODTrack*);
   bool IsPionCandidate(AliAODTrack*);
   bool IsTritCandidate(AliAODTrack*);
+  bool IsTritPID(AliAODTrack*);
   Double_t GetTOFmass(AliAODTrack*);
   Double_t GetTritNsigma(AliAODTrack*);
 
