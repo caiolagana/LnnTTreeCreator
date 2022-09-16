@@ -184,7 +184,7 @@ void LnnTTreeCreator::UserCreateOutputObjects()
 bool LnnTTreeCreator::PassCuts(AliAODTrack *tr)
 {
   bool pass = true;
-/*
+
   // TPC refit
   ULong_t status = tr->GetStatus();
   if ((status&AliESDtrack::kTPCrefit)==0) pass = false;
@@ -194,7 +194,7 @@ bool LnnTTreeCreator::PassCuts(AliAODTrack *tr)
   Int_t vtyp=(Int_t)vtx->GetType();
   Int_t ttyp=(Int_t)tr->GetType();
   if (ttyp==AliAODTrack::kFromDecayVtx && vtyp==AliAODVertex::kKink) pass = false;
-*/
+
   // default cuts
   if (tr->GetTPCNcls() < 60) pass = false;//TPCnlcs is stored in the final TTree so >80 can be applied
   if (tr->Chi2perNDF() > 5.) pass = false;
@@ -275,7 +275,6 @@ void LnnTTreeCreator::UserExec(Option_t *)
 
   // Get AOD event
   fAOD = dynamic_cast<AliAODEvent*>(InputEvent()); if (!fAOD) return;
-  cout << "entering event" << endl;
 
   // General stuff
   Nch = 0;
