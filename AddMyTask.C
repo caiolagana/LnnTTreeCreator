@@ -15,8 +15,8 @@ LnnTTreeCreator* AddMyTask(TString name = "LnnTTreeCreator")
     // create an instance of your task
     LnnTTreeCreator* task = new LnnTTreeCreator(name.Data());   
     if(!task) return 0x0;
-    //AliVEvent::kCentral | AliVEvent::kSemiCentral
-    task->SelectCollisionCandidates(AliVEvent::kAnyINT);
+    //AliVEvent::kAnyINT
+    task->SelectCollisionCandidates(AliVEvent::kCentral | AliVEvent::kSemiCentral);
     // add your task to the manager
     mgr->AddTask(task);
     // Create containers for input/output
