@@ -80,7 +80,7 @@ void runAnalysis()
         // add a few files to the chain (change this so that your local files are added)
         chain->Add("/sampa/caiolagana/data/AliAOD252.18r.pass3.000296691.root");
         // start the analysis locally, reading the events from the tchain
-        mgr->StartAnalysis("local", chain, 10);
+        mgr->StartAnalysis("local", chain);
     } else {
         // if we want to run on grid, we create and configure the plugin
         AliAnalysisAlien *alienHandler = new AliAnalysisAlien();

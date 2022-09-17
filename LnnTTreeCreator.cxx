@@ -136,6 +136,9 @@ void LnnTTreeCreator::UserCreateOutputObjects()
   // dEdx trits
   TH2F *fHistdEdxBandsTrit = new TH2F("fHistdEdxBandsTrit","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxBandsTrit);
+  // dEdx trits
+  TH2F *fHistdEdxTritPID = new TH2F("fHistdEdxTritPID","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
+  fOutputList->Add(fHistdEdxTritPID);
   // TOF-cleaned dEdx
   TH2F *fHistdEdxTOF = new TH2F("fHistdEdxTOF","TPC dEdx x P;P GeV/c;dEdx (a.u.)",  1600,-5,5,    1600,0,3000);
   fOutputList->Add(fHistdEdxTOF);
@@ -218,7 +221,7 @@ bool LnnTTreeCreator::IsPionCandidate(AliAODTrack *tr)
   return z;
 }
 
-bool LnnTTreeCreator::IsTritPID(AliAODTrack *tr) //crashes?! not using...
+bool LnnTTreeCreator::IsTritPID(AliAODTrack *tr)
 {
   AliPIDResponse::EDetPidStatus statusTPC;
   Double_t nSigmaTPC = -999;
@@ -269,6 +272,9 @@ bool LnnTTreeCreator::IsTritCandidate(AliAODTrack *tr)
   Double_t TOFmass = GetTOFmass(tr);
   Double_t dEdx = tr->GetTPCsignal();
 
+  if (tr->GetTPCmomentum() > 5.0) return false;
+  if (tr->GetTPCmomentum() < 0.1) return false;
+
   // TPC tuned nsigma
   if (GetTritNsigma(tr)>=-3.5 && GetTritNsigma(tr)<=4.5) isTPCtrit = true;
 
@@ -277,6 +283,7 @@ bool LnnTTreeCreator::IsTritCandidate(AliAODTrack *tr)
 
   // final conditions
   if (tr->GetTPCmomentum() > 0.6 && isTPCtrit == true && (dEdx > 91 || (dEdx <= 91 && isTOFtrit == true))) z = true;
+  //if (tr->GetTPCmomentum() > 0.6 && isTPCtrit == true && dEdx > 91.0) z = true;
 
   return z;
 }
@@ -310,8 +317,8 @@ void LnnTTreeCreator::UserExec(Option_t *)
       ((TH2F*)(fOutputList->FindObject("fHistdEdxAll")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());
       if (track->GetITSNcls()>0) {((TH2F*)(fOutputList->FindObject("fHistdEdxITS")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
       if (IsTritCandidate(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxBandsTrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
-      //if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxPIDtrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
-      
+      if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxTritPID")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
+      if (track->GetTPCsignal() > 91) {}//do nothing
       //TMath::Abs(TOFmass^2-7.929) < 3*0.363
       if (TMath::Abs(pow(GetTOFmass(track),2)-7.929)<3*0.363)
       {
