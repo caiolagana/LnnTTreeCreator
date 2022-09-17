@@ -256,6 +256,9 @@ Double_t LnnTTreeCreator::GetTritNsigma(AliAODTrack *tr)
   Double_t p = tr->GetTPCmomentum();
   Double_t nsigma=-99;
 
+  if (tr->GetTPCmomentum() > 5.0) return -99;
+  if (tr->GetTPCmomentum() < 0.1) return -99;
+
   if (dEdx>=center->Eval(p)) nsigma = 2.9*(dEdx - center->Eval(p))/(upper->Eval(p) - center->Eval(p));
   if (dEdx<center->Eval(p))  nsigma = 2.2*(dEdx - center->Eval(p))/(center->Eval(p) - lower->Eval(p));
 
@@ -317,8 +320,8 @@ void LnnTTreeCreator::UserExec(Option_t *)
       ((TH2F*)(fOutputList->FindObject("fHistdEdxAll")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());
       if (track->GetITSNcls()>0) {((TH2F*)(fOutputList->FindObject("fHistdEdxITS")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
       if (IsTritCandidate(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxBandsTrit")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
-      if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxTritPID")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
-      if (track->GetTPCsignal() > 91) {}//do nothing
+      //if (IsTritPID(track)) {((TH2F*)(fOutputList->FindObject("fHistdEdxTritPID")))->Fill(track->Charge()*track->GetTPCmomentum(), track->GetTPCsignal());}
+
       //TMath::Abs(TOFmass^2-7.929) < 3*0.363
       if (TMath::Abs(pow(GetTOFmass(track),2)-7.929)<3*0.363)
       {
