@@ -29,9 +29,9 @@ void runAnalysis()
    gSystem->Load("libANALYSISalice.so");
     
     // set if you want to run the analysis locally (kTRUE), or on grid (kFALSE)
-    Bool_t local = kTRUE;
+    Bool_t local = kFALSE;
     // if you run on grid, specify test mode (kTRUE) or full grid model (kFALSE)
-    Bool_t gridTest = kTRUE;
+    Bool_t gridTest = kFALSE;
 
         // since we will compile a class, tell root where to look for headers  
 #if !defined (__CINT__) || defined (__CLING__)
@@ -78,7 +78,8 @@ void runAnalysis()
         // if you want to run locally, we need to define some input
         TChain* chain = new TChain("aodTree");
         // add a few files to the chain (change this so that your local files are added)
-        chain->Add("/sampa/caiolagana/data/AliAOD252.18r.pass3.000296691.root");
+        //chain->Add("/sampa/caiolagana/data/AliAOD252.18r.pass3.000296691.root");
+        chain->Add("/sampa/caiolagana/data/LHC15o_246994_pass2_9074_AliAOD.root");
         // start the analysis locally, reading the events from the tchain
         mgr->StartAnalysis("local", chain);
     } else {
@@ -91,16 +92,21 @@ void runAnalysis()
         alienHandler->SetAnalysisSource("LnnTTreeCreator.cxx");
         // select the aliphysics version. all other packages
         // are LOADED AUTOMATICALLY!
-        alienHandler->SetAliPhysicsVersion("vAN-20210415_JALIEN-1");
+        alienHandler->SetAliPhysicsVersion("vAN-20210315-1");
+        //alienHandler->SetAliPhysicsVersion("vAN-20210415_JALIEN-1");
+        //alienHandler->SetAliPhysicsVersion("vAN-20220621_ROOT6-1");
         // set the Alien API version
         alienHandler->SetAPIVersion("V1.1x");
         // select the input data
-        alienHandler->SetGridDataDir("/alice/data/2015/LHC15o");
-        alienHandler->SetDataPattern("*pass1/AOD194/*AOD.root");
+        //alienHandler->SetGridDataDir("/alice/data/2015/LHC15o");
+        //alienHandler->SetDataPattern("*pass1/AOD194/*AOD.root");
+        alienHandler->SetGridDataDir("/alice/data/2018/LHC18r");
+        alienHandler->SetDataPattern("*pass3/AOD252/AOD/*AOD.root");
         // MC has no prefix, data has prefix 000
         alienHandler->SetRunPrefix("000");
         // runnumber
-        alienHandler->AddRunNumber(246994);
+        //alienHandler->AddRunNumber(246994);//LHC15o
+        alienHandler->AddRunNumber(297595);//LHC18r
         // number of files per subjob
         alienHandler->SetSplitMaxInputFileNumber(40);
         alienHandler->SetExecutable("myTask.sh");
@@ -115,11 +121,11 @@ void runAnalysis()
         // (see below) mode, set SetMergeViaJDL(kFALSE) 
         // to collect final results
         alienHandler->SetMaxMergeStages(1);
-        alienHandler->SetMergeViaJDL(kTRUE);
+        alienHandler->SetMergeViaJDL(kFALSE);
 
         // define the output folders
-        alienHandler->SetGridWorkingDir("LnnWorkingDir");
-        alienHandler->SetGridOutputDir("LnnOutputDir");
+        alienHandler->SetGridWorkingDir("LnnWorkingDir2018");
+        alienHandler->SetGridOutputDir("LnnOutputDir2018");
 
         // connect the alien plugin to the manager
         mgr->SetGridHandler(alienHandler);
@@ -131,7 +137,7 @@ void runAnalysis()
             mgr->StartAnalysis("grid");
         } else {
             // else launch the full grid analysis
-            alienHandler->SetRunMode("full");
+            alienHandler->SetRunMode("terminate");
             mgr->StartAnalysis("grid");
         }
     }
