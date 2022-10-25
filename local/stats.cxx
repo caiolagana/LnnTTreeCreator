@@ -2,11 +2,11 @@
 void stats(int dedx=-1,double lowerband=3.0, double upperband=3.0,double pmax=2.7)
 {
   TFile *o = new TFile(Form("out.stats_%1.0f_%1.0f_%1.1f.root",lowerband,upperband,pmax),"RECREATE");
-  TFile *f = new TFile("15-06-05-Grid.LnnTreeOutput.root", "READ");
-  TFile *fbg = new TFile("ESD/Grid.LnnTreeOutput.kCentralkSemiCentral.root", "READ");
+  TFile *f = new TFile("Grid.LnnTreeOutput.root", "READ");
+  //TFile *fbg = new TFile("ESD/Grid.LnnTreeOutput.kCentralkSemiCentral.root", "READ");
   //TFile *fbg = new TFile("ESD/Grid.LnnTreeOutputTPC60.root", "READ");
   TTree *t = (TTree*)f->Get("stree");
-  TTree *tbg = (TTree*)fbg->Get("stree");
+  //TTree *tbg = (TTree*)fbg->Get("stree");
   t->Print();
 
   // cuts over V0's
@@ -130,13 +130,13 @@ void stats(int dedx=-1,double lowerband=3.0, double upperband=3.0,double pmax=2.
   h_inv_mass->GetYaxis()->SetTitle(Form("Counts / %1.1f MeV",bin_size*1e3));
   h_inv_mass->GetYaxis()->SetRangeUser(0,180);
 
-  
+  return;
   significance(h_inv_mass);
 
   
 //return;
   
-  
+  /*
 
   
   TString cuts_bg;
@@ -167,6 +167,6 @@ o->cd();
 //canvas->Write();
 h_inv_mass->Write();
 o->Close();
-
+*/
 
 }

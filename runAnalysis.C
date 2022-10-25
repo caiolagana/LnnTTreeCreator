@@ -142,7 +142,7 @@ int run_numbers[99] = {297595, 297590, 297588, 297558, 297544, 297542, 297541, 2
             mgr->StartAnalysis("grid");
         } else {
             // else launch the full grid analysis
-            alienHandler->SetRunMode("terminate");
+            alienHandler->SetRunMode("full");
             mgr->StartAnalysis("grid");
         }
     }
